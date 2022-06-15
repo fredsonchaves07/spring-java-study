@@ -20,3 +20,15 @@ Repositório de estudos do framework Spring
 - Modularidade
 - Evolução constante
 - Open source
+
+### Injeção de dependência
+- Padrão de projeto que utiliza a injeção de controle com o objetivo de reduzir o forte acomplamento
+- Facilita a substituição de funcionalidade
+- Testes unitários com mais flexibilidade
+- O spring gerencia as injeções através do Spring IoC Container
+
+### Spring IoC Container
+- Responsável por implementar as injeções de dependências
+![Captura de tela de 2022-06-15 18-42-51](https://user-images.githubusercontent.com/43495376/173935004-e1cea892-fa6c-4d2d-a18f-54c44b3e1691.png)
+- O bean é objeto instanciado pelo spring
+- Podem ser injetados uns nos outros dependendo de suas necessidade
