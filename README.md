@@ -60,3 +60,61 @@ Repositório de estudos do framework Spring
     private Notificador notificador;
 ```
 - O ideal é utilizar o `@Autowired` no construtor, porém o mais utilizado é no atributo
+
+### Resolvendo problemas de ambiguidade das injeções de dependências
+- Podemos resolver o problema aceitando os múltiplos beans
+```java
+    @Autowired
+    private List<Notificador> notificadores
+
+    public ativar(Cliente cliente) {
+        for(Notificador notificador: notificadores) {
+            notificador.notificar(cliente, "Seu cadastro no sistema está ativo");
+        }
+    }
+```
+- Outra forma de resolver o problema, injetando apenas 1 notificador, usando a anotação `@Primary`
+- Esta anotação define a prioridade no processo de injeção de dependência
+```java
+    @Primary 
+    @Component 
+    public class NotificadorSMS implements Notificador {
+        @Autowired 
+        private Notificador notificador;
+    }
+```
+- Podemos desambiguar também usando anotação `@Qualifier`
+- Identificação e qualificar o componente
+```java
+    @Qualifier("email")
+    @Component 
+    public class NotificadorEmail implements Notificador {
+        @Autowired 
+        private Notificador notificador;
+    }
+
+    @Qualifier("sms")
+    @Component
+    public class NotificadorSMS implements Notificador {
+        @Autowired
+        private Notificador notificador;
+    }   
+```
+
+### Alterando comportamento da aplicação com o Spring Profiles
+- A Aplicação pode ser adequar em diversos tipos de aplicação
+- Geralmente utilizado para definir ambientes de desenvolvimento, testes e produção
+- Podemos utilizar um componente de acordo com o profile da aplicação
+```java
+    @Profile("prod")
+    @Component
+    public class NotificadorEmail implements Notificador {
+        @Autowired 
+        private Notificador notificador;
+    }
+```
+- No exemplo acima, esse componente só será executado se o profile for do tipo `prod`
+- É definido atraves do arquivo o `application.properties`
+```properties
+    spring.profiles.active=prod
+```
