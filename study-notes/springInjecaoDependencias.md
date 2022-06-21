@@ -104,3 +104,9 @@
 ```properties
     spring.profiles.active=prod
 ```
+
+## Configurando parâmetros de configuração com `application.properties`
+- Uma boa prática externalizar as configurações da aplicação em uma aquivo específico
+- As configurações da aplicação não devem ficar no código
+- Esse arquivo permite criar propriedade, definidas como chave e valor, customizadas
+- O spring já possui algumas propriedades pré definidas prontas para utilizar
