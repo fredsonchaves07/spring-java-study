@@ -110,3 +110,42 @@
 - As configurações da aplicação não devem ficar no código
 - Esse arquivo permite criar propriedade, definidas como chave e valor, customizadas
 - O spring já possui algumas propriedades pré definidas prontas para utilizar
+
+## Criando propriedades customizaveis
+- Podemos criar nossas próprias propriedades no arquivo `application.properties`
+
+```properties
+  notificador.email.host=smtp.algafood.com.br
+```
+- Para usar a configuração usamos a anotação `@Value`
+
+```java
+  @Value("${otificador.email.host}")
+  private String host;
+```
+- Existe uma forma de organizar melhor as configurações. Pode ser útil quando a aplicação tem muitas propriedades de configurações
+- Criarmos uma classe que representa o aguprador de configuraçao
+
+```java
+
+@Component
+@ConfigurationProperties("notificador.email")
+public class NotificadorProperties() {
+    private String hostServidor;
+  
+    public String getHostServidor() {
+      return hostServidor;
+    }
+  
+    public void setHostServidor(String hostServidor) {
+      this.hostServidor = hostServidor;
+    }
+}
+```
+
+- Usamos esse objeto na classe que usa as configurações chamando os métodos `get` e `set`
+- Realizamos a injeção da classe de configuração com `@Autowired`
+```java
+  @Autowired
+  private NotificadorProperties notificadorProperties;
+```
