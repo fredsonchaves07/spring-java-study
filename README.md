@@ -4,6 +4,7 @@ Repositório de estudos do framework Spring
 ## Tecnlogias utilizadas
 - [x] Java 17
 - [x] Spring Boot
+- [x] Spring Data JPA  
 
 ## Índice 
 - [Introdução](https://github.com/fredsonchaves07/spring-java-study/blob/main/study-notes/introducao.md)
