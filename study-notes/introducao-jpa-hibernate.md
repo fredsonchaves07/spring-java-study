@@ -28,8 +28,8 @@
 
 ```java
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
         </dependency>
 ```
 
@@ -41,3 +41,55 @@
   spring.datasource.password=1234
   spring.jpa.hibernate.ddl-auto=create
 ```
+## Mapeando os objetos
+### `@Entity`
+- Usamos a anotação `@Entity` para realizar o mapeamento das entidades
+
+```java
+@Entity
+public class Restaurante {
+
+    @Id
+    public Long id;
+
+    private String nome;
+
+    @Column(name = "taxa_frete")
+    private BigDecimal taxaFrete;
+}
+```
+
+### `@Id`
+- Define o campo a ser utilizado como chave primária da tabela
+- Essa anotação é obrigatória para definição das entidades
+
+```java
+    @Id
+    public Long id;
+```
+
+- Nesse atributo, usamos a anotação `@GeneratedValue` para definir a estratégia de geração auto increment no banco
+- A estratégia mais comum é `GenerationType.IDENTITY` que repassa ao banco de dados a forma de como deve ser realizado o auto increment
+
+```java
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+```
+
+### `@Table` e `@Column`
+- Anotações utilizadas para definir o nome da tabela e coluna
+
+```java
+    @Entity
+    @Table(name = "tab_cozinhas")
+    public class Cozinha {
+
+        @Column(name = "nom_cozinha")
+        private String nome;
+    }
+```
+
+## Importando dados automaticamente para as tabelas
+- Podemos realizar a importação dos valores no arquivo `import.sql`
+- Ao iniciar a aplicação, o spring executará os scripts que estão neste arquivo
