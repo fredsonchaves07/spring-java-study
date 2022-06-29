@@ -2,6 +2,7 @@ package com.fredsonchaves.algafood.jpa;
 
 import com.fredsonchaves.algafood.AlgafoodApplication;
 import com.fredsonchaves.algafood.domain.entity.Cozinha;
+import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +15,7 @@ public class ExclusaoCozinhaApplication {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cadastroCozinha = applicationContext.getBean(CozinhaRepository.class);
         Cozinha cozinha1 = new Cozinha();
         cozinha1.setId(1L);
         cadastroCozinha.remover(cozinha1);
