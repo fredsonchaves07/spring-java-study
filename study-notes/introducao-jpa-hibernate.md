@@ -93,3 +93,12 @@ public class Restaurante {
 ## Importando dados automaticamente para as tabelas
 - Podemos realizar a importação dos valores no arquivo `import.sql`
 - Ao iniciar a aplicação, o spring executará os scripts que estão neste arquivo
+
+
+## Estados de uma entidade
+- Uma entidade pode assumir alguns estados que podem ser:
+    - Novo (new ou transient) -> Quando um construmos um objeto novo
+    - Gerenciado (managed) -> Podemos chamar os métodos `persist` e `merge` para buscar uma entidade
+    - Removido (removed) -> Ocorre quando chamaos o método `remove`
+    - Desanexado (detached)  -> Entidade fica no estado "Desanexado" passada para o método `detach`
+![Diagrama-de-estados](https://user-images.githubusercontent.com/43495376/176482845-e8ab64ff-4d46-46e9-bdad-36dab4e0cd5d.png)
