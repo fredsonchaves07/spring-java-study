@@ -1,13 +1,11 @@
 package com.fredsonchaves.algafood.domain.entity;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-public class Restaurante {
+public class Estado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,13 +13,6 @@ public class Restaurante {
 
     @Column(nullable = false)
     private String nome;
-
-    @Column(nullable = false)
-    private BigDecimal taxaFrete;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Cozinha cozinha;
 
     public Long getId() {
         return id;
@@ -39,27 +30,11 @@ public class Restaurante {
         this.nome = nome;
     }
 
-    public Cozinha getCozinha() {
-        return cozinha;
-    }
-
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
-
-    public void setTaxaFrete(BigDecimal taxaFrete) {
-        this.taxaFrete = taxaFrete;
-    }
-
-    public void setCozinha(Cozinha cozinha) {
-        this.cozinha = cozinha;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Restaurante)) return false;
-        Restaurante that = (Restaurante) o;
+        if (!(o instanceof Estado)) return false;
+        Estado that = (Estado) o;
         return id.equals(that.id);
     }
 
