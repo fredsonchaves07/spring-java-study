@@ -102,3 +102,20 @@ public class Restaurante {
     - Removido (removed) -> Ocorre quando chamaos o método `remove`
     - Desanexado (detached)  -> Entidade fica no estado "Desanexado" passada para o método `detach`
 ![Diagrama-de-estados](https://user-images.githubusercontent.com/43495376/176482845-e8ab64ff-4d46-46e9-bdad-36dab4e0cd5d.png)
+
+## Mapeamento de entidades
+- Usamos essas anotações para relacionar entidades
+
+### Relacionamento N para 1
+- Faz o relacionamento de muitos para 1 no banco de dados
+
+```java
+    @ManyToOne
+    private Cozinha cozinha;
+```
+
+- Podemos alterar o nome da chave estrangeira usando esta anotação
+
+```java
+    @JoinColumn(name = "cozinha_id")
+```
