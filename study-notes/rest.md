@@ -16,3 +16,8 @@
 - RESTful -> Implementação das constraints (Boas práticas) do REST. Ou seja, o RESTful é o termo usado quando todas as
   regras e boas práticas do REST foram implementadas
 
+## Protocolo HTTP
+- Conjunto de regras que define a comunicação entre páginas web!
+![Captura de tela de 2022-07-04 18-00-18](https://user-images.githubusercontent.com/43495376/177216146-954a2ca8-21cc-40ce-97a7-7f8b195e856b.png)
+- As requisições são compostas pelos seguintes elementos
+![Captura de tela de 2022-07-04 18-01-43](https://user-images.githubusercontent.com/43495376/177216200-cbb58d39-9da1-4a91-ad3b-d5cdbac51ea4.png)
