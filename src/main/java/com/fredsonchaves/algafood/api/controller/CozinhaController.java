@@ -3,10 +3,9 @@ package com.fredsonchaves.algafood.api.controller;
 import com.fredsonchaves.algafood.domain.entity.Cozinha;
 import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +22,17 @@ public class CozinhaController {
     }
 
     @GetMapping("/{id}")
-    public Cozinha buscar(@PathVariable Long id) {
-        return cozinhaRepository.buscarPorId(id);
+    public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
+        Cozinha cozinha = cozinhaRepository.buscarPorId(id);
+        if (cozinha != null) {
+            return ResponseEntity.ok(cozinha);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+        return cozinhaRepository.salvar(cozinha);
     }
 }

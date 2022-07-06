@@ -54,3 +54,32 @@ public Cozinha buscar(@PathVariable Long id){
         return cozinhaRepository.buscarPorId(id);
         }
 ```
+
+## Buscando um recurso que não existe
+
+- Por padrão, o Spring devolve um status 200 mesmo quando um recurso não existe no banco de dados
+- Podemos manipular a resposta usando `ResponseEntity`
+
+```java
+    @GetMapping("/{id}")
+public ResponseEntity<Cozinha> buscar(@PathVariable Long id){
+        Cozinha cozinha=cozinhaRepository.buscarPorId(id);
+        if(cozinha!=null){
+        return ResponseEntity.ok(cozinha);
+        }
+        return ResponseEntity.notFound().build();
+        }
+```
+
+## Adicionando um recurso
+
+- Usamos o método `POST` para realizar a inclusão de um recurso no banco de dados
+- Exemplo de utilização
+
+```java
+    @PostMapping()
+@ResponseStatus(HttpStatus.CREATED)
+public Cozinha adicionar(@RequestBody Cozinha cozinha){
+        return cozinhaRepository.salvar(cozinha);
+        }
+```

@@ -34,7 +34,7 @@ public class CozinhaRepositoryJPA implements CozinhaRepository {
 
     @Override
     @Transactional
-    public Cozinha adicionar(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         return entityManager.merge(cozinha);
     }
 }

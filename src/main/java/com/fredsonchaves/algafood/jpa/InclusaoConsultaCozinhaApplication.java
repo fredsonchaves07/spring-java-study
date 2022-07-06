@@ -20,9 +20,9 @@ public class InclusaoConsultaCozinhaApplication {
         Cozinha cozinha2 = new Cozinha();
         cozinha1.setNome("Brasileira");
         cozinha2.setNome("Japonesa");
-        cadastroCozinha.adicionar(cozinha1);
-        cadastroCozinha.adicionar(cozinha2);
+        cadastroCozinha.salvar(cozinha1);
+        cadastroCozinha.salvar(cozinha2);
         List<Cozinha> cozinhas = cadastroCozinha.listar();
-        for (Cozinha cozinha: cozinhas) System.out.println(cozinha.getNome());
+        for (Cozinha cozinha : cozinhas) System.out.println(cozinha.getNome());
     }
 }
