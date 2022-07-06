@@ -1,6 +1,11 @@
 package com.fredsonchaves.algafood.domain.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +15,7 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty(value = "título")
     private String nome;
 
     public Long getId() {

@@ -1,9 +1,7 @@
 package com.fredsonchaves.algafood.infrastructure.repository;
 
 import com.fredsonchaves.algafood.domain.entity.Estado;
-import com.fredsonchaves.algafood.domain.entity.Permissao;
 import com.fredsonchaves.algafood.domain.repository.EstadoRepository;
-import com.fredsonchaves.algafood.domain.repository.PermissaoRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -19,7 +17,7 @@ public class EstadoJPA implements EstadoRepository {
 
     @Override
     public List<Estado> listar() {
-        return entityManager.createQuery("from Cozinha", Estado.class).getResultList();
+        return entityManager.createQuery("from Estado", Estado.class).getResultList();
     }
 
     @Override

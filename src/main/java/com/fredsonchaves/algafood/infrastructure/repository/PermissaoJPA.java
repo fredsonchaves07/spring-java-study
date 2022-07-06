@@ -1,8 +1,6 @@
 package com.fredsonchaves.algafood.infrastructure.repository;
 
-import com.fredsonchaves.algafood.domain.entity.FormaPagamento;
 import com.fredsonchaves.algafood.domain.entity.Permissao;
-import com.fredsonchaves.algafood.domain.repository.FormaPagamentoRepository;
 import com.fredsonchaves.algafood.domain.repository.PermissaoRepository;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +17,7 @@ public class PermissaoJPA implements PermissaoRepository {
 
     @Override
     public List<Permissao> listar() {
-        return entityManager.createQuery("from Cozinha", Permissao.class).getResultList();
+        return entityManager.createQuery("from Permissao", Permissao.class).getResultList();
     }
 
     @Override

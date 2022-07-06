@@ -1,8 +1,6 @@
 package com.fredsonchaves.algafood.infrastructure.repository;
 
-import com.fredsonchaves.algafood.domain.entity.Cozinha;
 import com.fredsonchaves.algafood.domain.entity.FormaPagamento;
-import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
 import com.fredsonchaves.algafood.domain.repository.FormaPagamentoRepository;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +17,7 @@ public class FormaPagamentoJPA implements FormaPagamentoRepository {
 
     @Override
     public List<FormaPagamento> listar() {
-        return entityManager.createQuery("from Cozinha", FormaPagamento.class).getResultList();
+        return entityManager.createQuery("from FormaPagamento", FormaPagamento.class).getResultList();
     }
 
     @Override

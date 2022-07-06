@@ -1,9 +1,7 @@
 package com.fredsonchaves.algafood.infrastructure.repository;
 
 import com.fredsonchaves.algafood.domain.entity.Cidade;
-import com.fredsonchaves.algafood.domain.entity.Permissao;
 import com.fredsonchaves.algafood.domain.repository.CidadeRepository;
-import com.fredsonchaves.algafood.domain.repository.PermissaoRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -19,7 +17,7 @@ public class CidadeJPA implements CidadeRepository {
 
     @Override
     public List<Cidade> listar() {
-        return entityManager.createQuery("from Cozinha", Cidade.class).getResultList();
+        return entityManager.createQuery("from Cidade", Cidade.class).getResultList();
     }
 
     @Override
