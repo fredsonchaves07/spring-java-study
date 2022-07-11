@@ -83,3 +83,35 @@ public Cozinha adicionar(@RequestBody Cozinha cozinha){
         return cozinhaRepository.salvar(cozinha);
         }
 ```
+
+## Atualizando um recurso existente
+
+- Usamos o método `PUT` para realizar a atualização das informações
+
+```java
+    @PutMapping("/{id}")
+public ResponseEntity<Cozinha> atualizar(@RequestBody Cozinha cozinha,@PathVariable Long id){
+        Cozinha cozinhaAtual=cozinhaRepository.buscarPorId(id);
+        BeanUtils.copyProperties(cozinha,cozinhaAtual,"id");
+        cozinhaRepository.salvar(cozinhaAtual);
+        return ResponseEntity.ok().body(cozinhaAtual);
+        }
+```
+
+## Deletando um recurso
+
+- Usamos o método `DELETE` para realizar a deleção do recurso existente
+
+```java
+    @DeleteMapping("/{id}")
+public ResponseEntity<Cozinha> remover(@PathVariable Long id){
+        Cozinha cozinha=cozinhaRepository.buscarPorId(id);
+        if(cozinha==null)return ResponseEntity.notFound().build();
+        try{
+        cozinhaRepository.remover(cozinha);
+        return ResponseEntity.noContent().build();
+        }catch(DataIntegrityViolationException exception){
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        }
+```
