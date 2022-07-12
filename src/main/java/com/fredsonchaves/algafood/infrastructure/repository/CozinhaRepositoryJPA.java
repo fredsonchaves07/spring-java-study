@@ -2,6 +2,7 @@ package com.fredsonchaves.algafood.infrastructure.repository;
 
 import com.fredsonchaves.algafood.domain.entity.Cozinha;
 import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -27,8 +28,9 @@ public class CozinhaRepositoryJPA implements CozinhaRepository {
 
     @Override
     @Transactional
-    public void remover(Cozinha cozinha) {
-        cozinha = buscarPorId(cozinha.getId());
+    public void remover(Long id) {
+        Cozinha cozinha = buscarPorId(id);
+        if (cozinha == null) throw new EmptyResultDataAccessException(1);
         entityManager.remove(cozinha);
     }
 
