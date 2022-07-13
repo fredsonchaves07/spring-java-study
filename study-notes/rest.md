@@ -115,3 +115,30 @@ public ResponseEntity<Cozinha> remover(@PathVariable Long id){
         }
         }
 ```
+
+## Atualização parcial do recurso
+
+- Usamos o método `PATCH` para atualizar parcialmente as informações do recurso
+
+```java
+    @PatchMapping("/{id}")
+public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,@RequestBody Map<String, Object> campos){
+        Restaurante restauranteAtual=restauranteRepository.buscarPorId(restauranteId);
+        if(restauranteAtual==null){
+        return ResponseEntity.notFound().build();
+        }
+        merge(campos,restauranteAtual);
+        return atualizar(restauranteAtual,restauranteId);
+        }
+
+private void merge(Map<String, Object> camposOrigem,Restaurante restauranteDestino){
+        ObjectMapper objectMapper=new ObjectMapper();
+        Restaurante restauranteOrigem=objectMapper.convertValue(camposOrigem,Restaurante.class);
+        camposOrigem.forEach((nomePropriedade,valorPropriedade)->{
+        Field field=ReflectionUtils.findField(Restaurante.class,nomePropriedade);
+        field.setAccessible(true);
+        Object novoValor=ReflectionUtils.getField(field,restauranteOrigem);
+        ReflectionUtils.setField(field,restauranteDestino,novoValor);
+        });
+        }
+```

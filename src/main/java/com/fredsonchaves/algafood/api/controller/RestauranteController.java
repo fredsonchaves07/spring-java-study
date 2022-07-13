@@ -1,5 +1,6 @@
 package com.fredsonchaves.algafood.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fredsonchaves.algafood.domain.entity.Restaurante;
 import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.fredsonchaves.algafood.domain.repository.RestauranteRepository;
@@ -8,9 +9,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -53,5 +57,26 @@ public class RestauranteController {
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
         cadastroRestauranteService.salvar(restauranteAtual);
         return ResponseEntity.ok().body(restauranteAtual);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos) {
+        Restaurante restauranteAtual = restauranteRepository.buscarPorId(restauranteId);
+        if (restauranteAtual == null) {
+            return ResponseEntity.notFound().build();
+        }
+        merge(campos, restauranteAtual);
+        return atualizar(restauranteAtual, restauranteId);
+    }
+
+    private void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Restaurante restauranteOrigem = objectMapper.convertValue(camposOrigem, Restaurante.class);
+        camposOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+            field.setAccessible(true);
+            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+            ReflectionUtils.setField(field, restauranteDestino, novoValor);
+        });
     }
 }
