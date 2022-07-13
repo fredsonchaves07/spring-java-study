@@ -12,5 +12,5 @@ public interface EstadoRepository {
 
     Estado adicionar(Estado permissao);
 
-    void remover(Estado permissao);
+    void remover(Long estadoId);
 }

@@ -2,6 +2,7 @@ package com.fredsonchaves.algafood.infrastructure.repository;
 
 import com.fredsonchaves.algafood.domain.entity.Cidade;
 import com.fredsonchaves.algafood.domain.repository.CidadeRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -27,8 +28,11 @@ public class CidadeJPA implements CidadeRepository {
 
     @Override
     @Transactional
-    public void remover(Cidade cidade) {
-        cidade = buscarPorId(cidade.getId());
+    public void remover(Long id) {
+        Cidade cidade = buscarPorId(id);
+        if (cidade == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         entityManager.remove(cidade);
     }
 

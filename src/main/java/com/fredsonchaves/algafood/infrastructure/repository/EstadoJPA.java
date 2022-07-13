@@ -2,6 +2,7 @@ package com.fredsonchaves.algafood.infrastructure.repository;
 
 import com.fredsonchaves.algafood.domain.entity.Estado;
 import com.fredsonchaves.algafood.domain.repository.EstadoRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -27,8 +28,11 @@ public class EstadoJPA implements EstadoRepository {
 
     @Override
     @Transactional
-    public void remover(Estado estado) {
-        estado = buscarPorId(estado.getId());
+    public void remover(Long id) {
+        Estado estado = buscarPorId(id);
+        if (estado == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         entityManager.remove(estado);
     }
 
