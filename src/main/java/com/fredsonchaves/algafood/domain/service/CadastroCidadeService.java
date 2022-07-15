@@ -11,6 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CadastroCidadeService {
 
@@ -22,18 +24,17 @@ public class CadastroCidadeService {
 
     public Cidade salvar(Cidade cidade) {
         Long estadoid = cidade.getEstado().getId();
-        Estado estado = estadoRepository.buscarPorId(estadoid);
-        if (estado == null) {
+        Optional<Estado> estado = estadoRepository.findById(estadoid);
+        if (estado.isEmpty()) {
             throw new EntidadeNaoEncontradaException(String.format("Estado de código %d não existe", estadoid));
         }
-        cidade.setEstado(estado);
-        return cidadeRepository.adicionar(cidade);
+        cidade.setEstado(estado.get());
+        return cidadeRepository.save(cidade);
     }
 
     public void excluir(Long id) {
         try {
-
-            cidadeRepository.remover(id);
+            cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
             throw new EntidadeNaoEncontradaException(String.format("Cidade de código %d não pode ser encontrado", id));
         } catch (DataIntegrityViolationException exception) {
