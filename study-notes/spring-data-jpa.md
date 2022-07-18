@@ -26,3 +26,12 @@ public List<Cozinha> consultarPorNome(String nome){
     public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 }
 ```
+
+## Criando queries JPQL customizadas
+
+- Usamos a anotação `@Query` nos métodos para criar consultas customizadas
+
+```java
+    @Query("from Restaurante where nome like %:nome%")
+    List<Cozinha> consultarPorNome(String nome);
+```
