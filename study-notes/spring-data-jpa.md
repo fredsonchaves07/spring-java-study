@@ -35,3 +35,26 @@ public List<Cozinha> consultarPorNome(String nome){
     @Query("from Restaurante where nome like %:nome%")
     List<Cozinha> consultarPorNome(String nome);
 ```
+
+## Externalizando consultas JPQL para um arquivo XML
+
+- Uma alternativa ao `@Query` é externalizar consultas por meio de um arquivo XML
+- Separa as consultas SQL da aplicação
+- Criamos um arquivo `orm.xml` na pasta `META_INF` no resources
+- ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <entity-mappings
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+    version="2.2">
+    <named-query name="Restaurante.consultaPorNome">
+    <query>
+    from Restaurante
+    where nome like concat('%', :nome%, '%')
+    and cozinha.id = :id
+    </query>
+    </named-query>
+    </entity-mappings>
+
+```
