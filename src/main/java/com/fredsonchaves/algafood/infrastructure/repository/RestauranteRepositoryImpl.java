@@ -39,4 +39,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
+
+    @Override
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return null;
+    }
 }

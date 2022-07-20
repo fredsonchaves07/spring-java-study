@@ -165,3 +165,62 @@ public List<Restaurante> find(String nome,BigDecimal taxaFreteInicial,BigDecimal
         return entityManager.createQuery(criteriaQuery).getResultList();
         }
 ```
+
+## Criando consultas com o padrão Specification
+
+- Specification é padrão do DDD e o Spring Data JPA realiza a implementação
+- Deixa a consulta mais elegante
+- Criamos classes que representam as consultas e a combinação delas podem ser utilizadas no controlador que utilizará a
+  consulta
+- Predicate que retornará restaurantes com frete gratis
+
+```java
+public class RestauranteComFreteGratisSpec implements Specification<Restaurante> {
+
+    @Override
+    public Predicate toPredicate(Root<Restaurante> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        return criteriaBuilder.equal(root.get("taxaFrete"), BigDecimal.ZERO);
+    }
+}
+```
+
+- Retornará restaurantes com nomes semelhates
+
+```java
+    public class RestauranteComNomeSemelhanteSpec implements Specification<Restaurante> {
+
+    private String nome;
+
+    public RestauranteComNomeSemelhanteSpec(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<Restaurante> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        return criteriaBuilder.like(root.get("nome"), "%" + nome + "%");
+    }
+}
+```
+
+- Para utilizarmos esse padrão é necessário extender o `JpaSpecificationExecutor<Restaurante>` no repositório
+
+```java
+    public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, JpaSpecificationExecutor<Restaurante> {
+```
+
+- Uma boa prática de utilização das specification é a criação de uma fábrica de specifications
+- Ao utilizar este factory, podemos eliminar as classes `RestauranteComNomeSemelhanteSpec`
+  e `RestauranteComFreteGratisSpec`
+
+```java
+public class RestauranteSpecs {
+
+    public static Specification<Restaurante> comFreteGratis() {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("taxaFrete"), BigDecimal.ZERO));
+    }
+
+    public static Specification<Restaurante> comNomeSemelhante(String nome) {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nome"), "%" + nome + "%"));
+    }
+}
+```
