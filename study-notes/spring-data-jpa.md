@@ -117,3 +117,51 @@ public List<Restaurante> find(String nome,BigDecimal taxaFreteInicial,BigDecimal
         return query.getResultList();
         }
 ```
+
+## Criteria API
+
+- API da Jpa para criação de querys programáticas
+- Útil para criação de querys complexas e dinâmicas
+- Utilização de código JAVA na criação de consultas SQL
+- Exemplo de consulta simples com criteria API
+
+```java
+
+@Repository
+public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Restaurante> criteriaQuery = criteriaBuilder.createQuery(Restaurante.class);
+        criteriaQuery.from(Restaurante.class);
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+}
+```
+
+- Criando uma consulta dinâmica com Criteria API
+
+```java
+    @Override
+public List<Restaurante> find(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+        CriteriaBuilder criteriaBuilder=entityManager.getCriteriaBuilder();
+        CriteriaQuery<Restaurante> criteriaQuery=criteriaBuilder.createQuery(Restaurante.class);
+        var predicates=new ArrayList<Predicate>();
+        Root<Restaurante> root=criteriaQuery.from(Restaurante.class);
+        if(StringUtils.hasText(nome)){
+        predicates.add(criteriaBuilder.like(root.get("nome"),"%"+nome+"%"));
+        }
+        if(taxaFreteInicial!=null){
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"),taxaFreteInicial));
+        }
+        if(taxaFreteFinal!=null){
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"),taxaFreteFinal));
+        }
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+        }
+```
