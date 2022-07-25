@@ -50,4 +50,25 @@ private List<FormaPagamento> formaPagamentos=new ArrayList<>();
 - Dependendo da quantidade de recursos pode não ser uma boa abordagem retornar essas informações em uma lista de todos
   os restaurantes por exemplo
 - Tende a ter um playload muito grande
-- 
+
+## Mapenando classes incorporáveis com @Embedded e @Embeddable
+
+- Usamos esse recurso quando queremos componentizar uma "Entidade"
+- É incorporado em alguma entidade
+- Não cria tabela no banco de dados
+- Não representa uma entidade
+
+```java
+
+@Embeddable
+public class Endereco {
+}
+}
+```
+
+- Classe que usara a classe embedable
+
+```java
+   @Embedded
+private Endereco endereco;
+```

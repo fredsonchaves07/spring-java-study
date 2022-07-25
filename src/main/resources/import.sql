@@ -1,22 +1,29 @@
 INSERT INTO cozinha (id, nome) VALUES (1, 'Tailandesa');
 INSERT INTO cozinha (id, nome) VALUES (2, 'Indiana');
 
-INSERT INTO restaurante(nome, taxa_frete, cozinha_id) VALUES ('Thai Goumert', 10, 1);
-INSERT INTO restaurante(nome, taxa_frete, cozinha_id) VALUES ('Thai Delivery', 9.50, 1);
-INSERT INTO restaurante(nome, taxa_frete, cozinha_id) VALUES ('Tuk Tuk Comida Indiana', 15, 2);
-
 INSERT INTO estado (id, nome) VALUES (1, 'Minas Gerais');
 INSERT INTO estado (id, nome) VALUES (2, 'São Paulo');
-INSERT INTO estado (id, nome) VALUES (3, 'Ceará');
+INSERT INTO estado (id, nome)
+VALUES (3, 'Ceará');
 
-INSERT INTO cidade (id, nome, estado_id) VALUES (1, 'Uberlândia', 1);
-INSERT INTO cidade (id, nome, estado_id) VALUES (2, 'Belo Horizonte', 1);
+INSERT INTO cidade (id, nome, estado_id)
+VALUES (1, 'Uberlândia', 1);
+INSERT INTO cidade (id, nome, estado_id)
+VALUES (2, 'Belo Horizonte', 1);
 INSERT INTO cidade (id, nome, estado_id)
 VALUES (3, 'São Paulo', 2);
 INSERT INTO cidade (id, nome, estado_id)
 VALUES (4, 'Campinas', 2);
 INSERT INTO cidade (id, nome, estado_id)
 VALUES (5, 'Fortaleza', 3);
+
+INSERT INTO restaurante(nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro,
+                        endereco_numero, endereco_bairro)
+VALUES ('Thai Goumert', 10, 1, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+INSERT INTO restaurante(nome, taxa_frete, cozinha_id)
+VALUES ('Thai Delivery', 9.50, 1);
+INSERT INTO restaurante(nome, taxa_frete, cozinha_id)
+VALUES ('Tuk Tuk Comida Indiana', 15, 2);
 
 INSERT INTO forma_pagamento (id, descricao)
 VALUES (1, 'Cartão de crédito');
