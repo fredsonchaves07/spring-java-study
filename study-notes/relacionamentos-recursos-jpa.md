@@ -36,3 +36,18 @@ private List<Restaurante> restaurantes=new ArrayList<>();
 - Ao utilizar anotação é criado uma tabela associativa
 - A anotação `@JoinColumn` é utilizada para definir o nome de tabela e o nome das colunas
 - O nome da tabela é opcional
+
+```java
+      @ManyToMany
+@JoinTable(
+        name = "restaurante_forma_pagamento",
+        joinColumns = @JoinColumn(name = "restaurante_id"),
+        inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+)
+private List<FormaPagamento> formaPagamentos=new ArrayList<>();
+```
+
+- Dependendo da quantidade de recursos pode não ser uma boa abordagem retornar essas informações em uma lista de todos
+  os restaurantes por exemplo
+- Tende a ter um playload muito grande
+- 

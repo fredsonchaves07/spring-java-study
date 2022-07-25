@@ -1,5 +1,7 @@
 package com.fredsonchaves.algafood.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Restaurante {
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "restaurante_forma_pagamento",
