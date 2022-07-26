@@ -38,7 +38,7 @@ private List<Restaurante> restaurantes=new ArrayList<>();
 - O nome da tabela é opcional
 
 ```java
-      @ManyToMany
+@ManyToMany
 @JoinTable(
         name = "restaurante_forma_pagamento",
         joinColumns = @JoinColumn(name = "restaurante_id"),
@@ -51,7 +51,7 @@ private List<FormaPagamento> formaPagamentos=new ArrayList<>();
   os restaurantes por exemplo
 - Tende a ter um playload muito grande
 
-## Mapenando classes incorporáveis com @Embedded e @Embeddable
+## Mapeando classes incorporáveis com @Embedded e @Embeddable
 
 - Usamos esse recurso quando queremos componentizar uma "Entidade"
 - É incorporado em alguma entidade
@@ -63,12 +63,27 @@ private List<FormaPagamento> formaPagamentos=new ArrayList<>();
 @Embeddable
 public class Endereco {
 }
-}
 ```
 
 - Classe que usara a classe embedable
 
 ```java
-   @Embedded
+@Embedded
 private Endereco endereco;
 ```
+
+## Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp
+
+- Podemos criar campos que representa a data de criação e atualização de um dado no banco
+
+```java
+@CreationTimestamp
+@Column(nullable = false, columnDefinition = "datetime")
+private LocalDateTime dataCadastro;
+
+@UpdateTimestamp
+@Column(nullable = false, columnDefinition = "datetime")
+private LocalDateTime dataAtualizacao;
+```
+
+- É necessário também incluir esses campos a ser ignorados no `BeanUtils.copyProperties`
