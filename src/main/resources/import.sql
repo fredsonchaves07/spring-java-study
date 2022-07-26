@@ -71,17 +71,17 @@ values (3, 2);
 INSERT INTO restaurante_forma_pagamento (restaurante_id, pagamento_id)
 values (3, 3);
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
-values (1, 1),
-       (1, 2),
-       (1, 3),
-       (2, 3),
-       (3, 2),
-       (3, 3),
-       (4, 1),
-       (4, 2),
-       (5, 1),
-       (5, 2),
-       (6, 3);
+values (4, 1);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
+values (4, 2);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
+values (4, 3);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
+values (5, 1);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
+values (5, 2);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
+values (6, 3);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id)
 values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
