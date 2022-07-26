@@ -24,6 +24,10 @@ public class Restaurante {
     @Column(nullable = false)
     private BigDecimal taxaFrete;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    public List<Produto> produtos = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
