@@ -87,3 +87,10 @@ private LocalDateTime dataAtualizacao;
 ```
 
 - É necessário também incluir esses campos a ser ignorados no `BeanUtils.copyProperties`
+
+## Eagger Loading e Lazy Loading
+
+- O Eagger loading é estrategia utilizada nas relações "ToOne"
+- Vai ser carregada junto com a entidade
+- O Lazy loading é a estratégia utilizada nas relações "ToMany"
+- O carregamento ocorre quando de fato é necessário. Por demanda
