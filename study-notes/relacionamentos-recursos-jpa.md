@@ -94,3 +94,4 @@ private LocalDateTime dataAtualizacao;
 - Vai ser carregada junto com a entidade
 - O Lazy loading é a estratégia utilizada nas relações "ToMany"
 - O carregamento ocorre quando de fato é necessário. Por demanda
+- Para alterar a estrategia, mudamos o tecth na anotação do "ToMany" ou "ToOne"
