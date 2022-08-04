@@ -46,3 +46,14 @@
 ```
 
 - Os script de migração devem ser criados seguindo um padrão. Exemplo: `V001__criacao-inicial.sql`
+
+## Criando DDLs a partir do mapeamento relacional com flyway
+
+- Comente e remova essas duas propriedades logo após a criação do DDL. Só precisamos disso para o arquivo uma única vez
+- Gera os scripts de geração de schema
+- Arquivo temporário de script (Recomendado realizar uma revisão profundada do código sql)
+
+```properties
+spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+spring.jpa.properties.javax.persistence.schema-generation.scripts-target=src/main/resources/ddl.sql
+```
