@@ -2,7 +2,6 @@ package com.fredsonchaves.algafood.api.controller;
 
 import com.fredsonchaves.algafood.domain.entity.Cozinha;
 import com.fredsonchaves.algafood.domain.exception.EntidadeEmUsoException;
-import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
 import com.fredsonchaves.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
@@ -58,8 +57,8 @@ public class CozinhaController {
         try {
             cadastroCozinhaService.excluir(id);
             return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException exception) {
-            return ResponseEntity.notFound().build();
+//        } catch (EntidadeNaoEncontradaException exception) {
+//            return ResponseEntity.notFound().build();
         } catch (EntidadeEmUsoException exception) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
