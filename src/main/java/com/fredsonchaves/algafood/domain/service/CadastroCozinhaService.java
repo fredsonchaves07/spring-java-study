@@ -28,4 +28,9 @@ public class CadastroCozinhaService {
             throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pode ser removido", id));
         }
     }
+
+    public Cozinha buscarOuFalhar(Long cozinhaId) {
+        return cozinhaRepository.findById(cozinhaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Cozinha de código %d não pode ser encontrado", cozinhaId)));
+    }
 }

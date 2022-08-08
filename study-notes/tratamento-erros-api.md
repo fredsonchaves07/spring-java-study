@@ -17,3 +17,14 @@ public class EntidadeNaoEncontradaException extends RuntimeException {
     }
 }
 ```
+
+## Lançamento de erro com `ResponseStatusException`
+
+- Ja traduz os códigos erros do http
+- Forma alternativa de lançamento de erros
+- Colocamos essa anotação no controller
+- Classe de exception do spring
+
+```java
+throw new ResponseStatusException(HttpStatus.NOT_FOUND,reason);
+```
