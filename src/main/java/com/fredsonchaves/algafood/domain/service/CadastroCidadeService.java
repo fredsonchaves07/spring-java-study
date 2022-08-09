@@ -4,6 +4,7 @@ import com.fredsonchaves.algafood.domain.entity.Cidade;
 import com.fredsonchaves.algafood.domain.entity.Estado;
 import com.fredsonchaves.algafood.domain.exception.EntidadeEmUsoException;
 import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.fredsonchaves.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.fredsonchaves.algafood.domain.repository.CidadeRepository;
 import com.fredsonchaves.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class CadastroCidadeService {
         Long estadoid = cidade.getEstado().getId();
         Optional<Estado> estado = estadoRepository.findById(estadoid);
         if (estado.isEmpty()) {
-            throw new EntidadeNaoEncontradaException(String.format("Estado de código %d não existe", estadoid));
+            throw new EstadoNaoEncontradoException(String.format("Estado de código %d não existe", estadoid));
         }
         cidade.setEstado(estado.get());
         return cidadeRepository.save(cidade);
@@ -40,5 +41,10 @@ public class CadastroCidadeService {
         } catch (DataIntegrityViolationException exception) {
             throw new EntidadeEmUsoException(String.format("Cidade de código %d não pode ser removido", id));
         }
+    }
+
+    public Cidade buscarOuFalhar(Long cidadeId) {
+        return cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Cidade de código %d não pode ser encontrado", cidadeId)));
     }
 }

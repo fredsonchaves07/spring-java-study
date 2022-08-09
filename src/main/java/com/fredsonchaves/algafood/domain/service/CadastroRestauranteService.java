@@ -37,4 +37,9 @@ public class CadastroRestauranteService {
             throw new EntidadeEmUsoException(String.format("Restaurante de código %d não pode ser removido", id));
         }
     }
+
+    public Restaurante buscarOuFalhar(Long cidadeId) {
+        return restauranteRepository.findById(cidadeId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Restaurante de código %d não pode ser encontrado", cidadeId)));
+    }
 }

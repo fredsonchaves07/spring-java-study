@@ -28,3 +28,8 @@ public class EntidadeNaoEncontradaException extends RuntimeException {
 ```java
 throw new ResponseStatusException(HttpStatus.NOT_FOUND,reason);
 ```
+
+## Tratando exceções em nível de controlador com `@ExceptionHandler`
+
+- Podemos customizar os erros ocorridos na aplicação no controller
+- É possível customizar mensagens e códigos de erros
