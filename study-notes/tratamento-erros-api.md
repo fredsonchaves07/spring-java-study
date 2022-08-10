@@ -36,7 +36,6 @@ throw new ResponseStatusException(HttpStatus.NOT_FOUND,reason);
 - Exemplo de utilização de um handler
 
 ```java
-
 @ControllerAdvice
 public class ApiExceptionHandler {
 
@@ -55,13 +54,13 @@ public class ApiExceptionHandler {
 
 ```java
     @Override
-protected ResponseEntity<Object> handleExceptionInternal(Exception ex,Object body,HttpHeaders headers,HttpStatus status,WebRequest request){
-        if(body==null){
-        body=Problema.builder().setDataHora(LocalDateTime.now()).setMensagem(status.getReasonPhrase());
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        if (body == null) {
+            body = Problema.builder().setDataHora(LocalDateTime.now()).setMensagem(status.getReasonPhrase());
         }
-        if(body instanceof String){
-        body=Problema.builder().setDataHora(LocalDateTime.now()).setMensagem((String)body);
+        if (body instanceof String) {
+            body = Problema.builder().setDataHora(LocalDateTime.now()).setMensagem((String) body);
         }
-        return super.handleExceptionInternal(ex,body,headers,status,request);
-        }
+        return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
 ```
