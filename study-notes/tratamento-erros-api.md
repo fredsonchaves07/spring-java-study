@@ -33,3 +33,35 @@ throw new ResponseStatusException(HttpStatus.NOT_FOUND,reason);
 
 - Podemos customizar os erros ocorridos na aplicação no controller
 - É possível customizar mensagens e códigos de erros
+- Exemplo de utilização de um handler
+
+```java
+
+@ControllerAdvice
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException exception) {
+        Problema problema = Problema.builder().setDataHora(LocalDateTime.now()).setMensagem(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
+    }
+}
+```
+
+- Podemos extender `ResponseEntityExceptionHandler` para tratar algumas exceções internas do spring
+- Herdando da classe, evitamos tratar todos os erros da aplicação como por exemplo xml ou erros especificos do spring
+- Eles não retornam um corpo na resposta do http. Porém é possível customizar
+- Para customizar podemos sobrescrever o método `handleExceptionInternal`
+
+```java
+    @Override
+protected ResponseEntity<Object> handleExceptionInternal(Exception ex,Object body,HttpHeaders headers,HttpStatus status,WebRequest request){
+        if(body==null){
+        body=Problema.builder().setDataHora(LocalDateTime.now()).setMensagem(status.getReasonPhrase());
+        }
+        if(body instanceof String){
+        body=Problema.builder().setDataHora(LocalDateTime.now()).setMensagem((String)body);
+        }
+        return super.handleExceptionInternal(ex,body,headers,status,request);
+        }
+```

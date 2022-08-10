@@ -1,6 +1,5 @@
 package com.fredsonchaves.algafood.api.controller;
 
-import com.fredsonchaves.algafood.api.controller.exceptionHandler.Problema;
 import com.fredsonchaves.algafood.domain.entity.Cidade;
 import com.fredsonchaves.algafood.domain.exception.EntidadeEmUsoException;
 import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,11 +68,5 @@ public class CidadeController {
         } catch (EntidadeEmUsoException exception) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-    }
-
-    @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException exception) {
-        Problema problema = Problema.builder().setDataHora(LocalDateTime.now()).setMensagem(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
     }
 }
