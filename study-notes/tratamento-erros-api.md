@@ -64,3 +64,15 @@ public class ApiExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 ```
+
+
+## RFC 7807 e a especificação do retorno de erro de APIs
+
+- Existe um documento que descreve uma possível boa prática para o retorno de erros de uma api
+- Apresentar informações claras do erro para quem está consumindo o serviço da Api
+
+![Captura de tela de 2022-08-10 19-28-47](https://user-images.githubusercontent.com/43495376/184031574-5ecf3884-dc75-491c-b000-97f611f9ba5e.png)
+
+- Podemos extender o formato, incluindo propriedades específicos
+
+![Captura de tela de 2022-08-10 19-33-11](https://user-images.githubusercontent.com/43495376/184032035-3653c28a-0211-4627-8e56-7b319d69cab8.png)
