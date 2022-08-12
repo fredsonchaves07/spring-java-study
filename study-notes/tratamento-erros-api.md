@@ -76,3 +76,49 @@ public class ApiExceptionHandler {
 - Podemos extender o formato, incluindo propriedades específicos
 
 ![Captura de tela de 2022-08-10 19-33-11](https://user-images.githubusercontent.com/43495376/184032035-3653c28a-0211-4627-8e56-7b319d69cab8.png)
+
+## Habilitando erros na desserialização de propriedades inexistentes ou ignoradas
+
+- Podemos incluir tratamento de erros para propriedades inexistentes em um corpo de requisição
+- Necessário adicionar nas propriedades para que seja possível lançar exceção caso uma propriedade inexistente seja incluida ou caso esteja faltando alguma propriedade necessária no corpo da requisição
+
+```properties
+spring.jackson.deserialization.fail-on-ignored-properties=true
+spring.jackson.deserialization.fail-on-unknown-properties=true
+```
+
+- Para lançamento de erro também nos métodos de atualização de recursos, precisamos configurar o object mapper
+
+```java
+objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+```
+
+- O tipo de exceção lançada é o `IlegalException`
+
+## Tratando outras exceções não capturadas
+
+- Geralmente esses tipos de erros é retornado com código 500
+- Criamos um handler que captura `Exception.class`
+- Exemplo de como podemos criar o tratamento
+
+```java
+@ExceptionHandler(Exception.class)
+public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;		
+    ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+    String detail = "Ocorreu um erro interno inesperado no sistema. "
+            + "Tente novamente e se o problema persistir, entre em contato "
+            + "com o administrador do sistema.";
+
+    // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
+    // fazendo logging) para mostrar a stacktrace no console
+    // Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes
+    // para você durante, especialmente na fase de desenvolvimento
+    ex.printStackTrace();
+    
+    Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+} 
+```

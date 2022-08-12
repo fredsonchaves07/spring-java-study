@@ -1,5 +1,6 @@
 package com.fredsonchaves.algafood.api.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fredsonchaves.algafood.domain.entity.Restaurante;
 import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -79,6 +80,8 @@ public class RestauranteController {
 
     private void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         Restaurante restauranteOrigem = objectMapper.convertValue(camposOrigem, Restaurante.class);
         camposOrigem.forEach((nomePropriedade, valorPropriedade) -> {
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
