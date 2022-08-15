@@ -5,6 +5,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,15 +24,20 @@ public class Restaurante {
     public Long id;
 
     @Column(nullable = false)
+    @NotEmpty
+    @NotBlank
     private String nome;
 
     @Column(nullable = false)
+    @DecimalMin("1")
     private BigDecimal taxaFrete;
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     public List<Produto> produtos = new ArrayList<>();
 
+    @Valid
+    @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
