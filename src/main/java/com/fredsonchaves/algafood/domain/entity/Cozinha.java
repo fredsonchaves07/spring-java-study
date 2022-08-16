@@ -1,8 +1,10 @@
 package com.fredsonchaves.algafood.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fredsonchaves.algafood.Groups;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +15,10 @@ public class Cozinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @NotNull(groups = Groups.CozinhaId.class)
     private Long id;
 
+    @NotBlank
     private String nome;
 
     @JsonIgnore

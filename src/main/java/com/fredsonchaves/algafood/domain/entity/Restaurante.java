@@ -1,6 +1,7 @@
 package com.fredsonchaves.algafood.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fredsonchaves.algafood.Groups;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,6 +11,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public class Restaurante {
     private String nome;
 
     @Column(nullable = false)
-    @DecimalMin("1")
+    @DecimalMin(value = "1")
     private BigDecimal taxaFrete;
 
     @JsonIgnore
@@ -40,6 +43,7 @@ public class Restaurante {
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     private Cozinha cozinha;
 
     @JsonIgnore

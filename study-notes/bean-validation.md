@@ -97,3 +97,59 @@ protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotV
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
 ```
+
+## Agrupando e restrigindo constraints que devem ser usadas na validação
+
+- Em alguns casos queremos realizar as validações dos campos somente em determinadas condições ou quando alguma outra entidade está relacionada
+- Isso pode ser útil quando temos validações em cascatas
+- A entidade cozinha possui uma validação de id que nao pode ser nula, somente é usada quando temos atualização de restaurante por exemplo
+- Nessa situação pode ser interessante agrupar a validação
+- Criamos uma interface que será usada para agrupar as validações
+
+```java
+public interface Groups {
+
+    public interface CadastroRestaurante {}
+}
+
+```
+
+- Quando for cadastrar um restaurante valida um objeto do tipo Restaurante que possui constraints do grupo restaurante
+- Todas as propriedades de Restaurantes deverá ter o grupo cadastrado
+
+```java
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(groups = Groups.CadastroRestaurante.class)
+    private Long id;
+```
+
+- Mas para aplicar os efeitos de validação dos grupos é necessário alterar o `@Valid` do controller para `@Validate` para que seja possível validar os grupos
+
+```java
+@Validated(Groups.CadastroRestaurante.class)
+```
+
+- Uma alternativa de validar essas constraints é utilizar a validação em cascata com `@ConvertGroup`
+- Na classe restaurante na propriedade que tem a propriedade de Cozinha, usamos o `@ConvertGroup`
+
+```java
+    @Valid
+    @NotNull
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    private Cozinha cozinha;
+```
+
+- Na classe de Cozinha usamos o grupo de cadastro Restaurante
+
+```java
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(groups = Groups.CadastroRestaurante.class)
+    private Long id;
+```
+
+- No controller usamos somente o `@Valid` ao invés de usar o `@Validated`
+- 
