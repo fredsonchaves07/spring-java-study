@@ -152,4 +152,78 @@ public interface Groups {
 ```
 
 - No controller usamos somente o `@Valid` ao invés de usar o `@Validated`
-- 
+
+## Customizando e resolvendo mensagens de validação globais em Resource Bundle
+
+- Criamos um arquivo de propriedades que conterá as mensagens de erro dos atributos `messages.properties`
+- No exemplo abaixo caso nao for informado o nome do restaurante será apresentado a mensagem
+- Essa é uma especificação do spring
+
+```properties
+NotBlank.restaurante.nome=Nome do restaurante é obrigatório
+```
+
+- Também é possível criar uma validação genérica para todos os nomes, independente da entidade
+
+```properties
+NotBlank.nome="Nome deve ser obrigatório"
+```
+
+## Resolvendo mensagens de validação com Resource Bundle do Bean Validation
+
+- Especificação do bean validation
+- Por padrão as mensagens de erro (inglês) vem do bean validation, porém podemos customizar as mensagens
+- Criamos um arquivo `ValidationMessages.properties` que conterá as constraints do bean validation
+
+```properties
+javax.validation.constraints.PositiveOrZero.message=deve ser um número positivo
+```
+- O arquivo `messages.properties` sobscreve o arquivo `ValidationMessages.properties`
+
+## Usando o Resource Bundle do Spring como Resource Bundle do Bean Validation
+
+- Podemos juntar os dois arquivos `messages.properties` e o `ValidationMessages.properties` para evitar problemas de sobrescrita
+- Criamos uma classe de configuração que usará o `messages.properties` como padrão das mensagens de erro do bean validator
+
+```java
+@Configuration
+public class ValidationConfig {
+
+    @Bean
+    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource);
+        return bean;
+    }
+}
+```
+
+## Criando constraints de validação customizadas usando Composição
+
+- Podemos criar nossas próprias constraints de validação
+- Criamos uma anotação `TaxaFrete`
+
+```java
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {})
+@PositiveOrZero
+public @interface TaxaFrete {
+    
+    @OverridesAttribute(constraint = PositiveOrZero.class, name = "message")
+    String message() default "{TaxaFrete.invalida}";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+- Na entidade que é chamado atributo `taxaFrete` usamos anotação que criamos
+
+```java
+    @Column(nullable = false)
+    @DecimalMin(value = "1")
+    @TaxaFrete
+    private BigDecimal taxaFrete;
+```
