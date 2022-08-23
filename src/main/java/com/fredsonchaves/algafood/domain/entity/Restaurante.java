@@ -1,16 +1,14 @@
 package com.fredsonchaves.algafood.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fredsonchaves.algafood.Groups;
+import com.fredsonchaves.algafood.core.validation.Groups;
+import com.fredsonchaves.algafood.core.validation.TaxaFrete;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -33,6 +31,7 @@ public class Restaurante {
 
     @Column(nullable = false)
     @DecimalMin(value = "1")
+    @TaxaFrete
     private BigDecimal taxaFrete;
 
     @JsonIgnore

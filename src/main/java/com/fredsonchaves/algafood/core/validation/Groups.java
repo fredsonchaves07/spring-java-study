@@ -1,4 +1,4 @@
-package com.fredsonchaves.algafood;
+package com.fredsonchaves.algafood.core.validation;
 
 public interface Groups {
 

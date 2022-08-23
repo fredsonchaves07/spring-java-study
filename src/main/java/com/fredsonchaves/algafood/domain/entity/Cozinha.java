@@ -1,7 +1,7 @@
 package com.fredsonchaves.algafood.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fredsonchaves.algafood.Groups;
+import com.fredsonchaves.algafood.core.validation.Groups;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
