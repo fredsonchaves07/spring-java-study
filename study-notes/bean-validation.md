@@ -227,3 +227,91 @@ public @interface TaxaFrete {
     @TaxaFrete
     private BigDecimal taxaFrete;
 ```
+
+## Criando constraints de validação customizadas com implementação de ConstraintValidator
+
+- É possível criar constraint que possui interfaces próprias de validação. Pode ser útil em casos que precisamos validar algo necessário da regra de negócios
+- Criamos uma anotação `Multiplo` que utilizará o `MultiploValidator` como validação
+
+```java
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {MultiploValidator.class})
+@PositiveOrZero
+public @interface Multiplo {
+
+    String message() default "{Multiplo valor inválida}";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    int numero();
+}
+```
+
+- Criamos a classe que implementará a constraint de validação do bean validator
+
+```java
+public class MultiploValidator implements ConstraintValidator<Multiplo, Number> {
+
+    private int numeroMultiplo;
+
+    @Override
+    public void initialize(Multiplo constraintAnnotation) {
+        this.numeroMultiplo = constraintAnnotation.numero();
+    }
+
+    @Override
+    public boolean isValid(Number number, ConstraintValidatorContext constraintValidatorContext) {
+        boolean valid = true;
+        if (number != null) {
+            var valorDecimal = BigDecimal.valueOf(number.doubleValue());
+            var multiploDecimal = BigDecimal.valueOf(numeroMultiplo);
+            var resto = valorDecimal.remainder(multiploDecimal);
+            valid = BigDecimal.ZERO.compareTo(resto) == 0;
+        }
+        return valid;
+    }
+}
+```
+
+## Criando validação em nível de classe
+
+- Usado quando temos uma regra que depende de 2 ou mais propriedades
+- Validação condicional dependendo da primeira propriedade
+- Na classe `Restaurante` usamos a anotação `ValorZeroIncluiDescricao`que contem uma regra de validação de duas propriedades
+
+```java
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+@Entity
+public class Restaurante {
+}
+```
+
+- `ValorZeroIncluiDescricao` possui anotação que define que ela deve ser utilizada somente em classe ao invés de propriedade
+
+```java
+@Target({ElementType.TYPE})
+```
+
+- A classe de validaçao fica com a seguinte regra
+
+```java
+    @Override
+    public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
+        boolean valido = true;
+        try {
+            BigDecimal valor = (BigDecimal) BeanUtils.getPropertyDescriptor(o.getClass(), valorField)
+                    .getReadMethod().invoke(o);
+            String descricao = (String) BeanUtils.getPropertyDescriptor(o.getClass(), descricaoField)
+                    .getReadMethod().invoke(o);
+            if (valor != null && BigDecimal.ZERO.compareTo(valor) == 0 && descricao != null) {
+                valido = descricao.toLowerCase().contains(this.descricaoObrigatoria.toLowerCase());
+            }
+        } catch (Exception e) {
+               throw new ValidationException(e);
+        }
+        return valido;
+    }
+```

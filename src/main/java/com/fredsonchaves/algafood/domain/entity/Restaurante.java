@@ -2,13 +2,17 @@ package com.fredsonchaves.algafood.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fredsonchaves.algafood.core.validation.Groups;
-import com.fredsonchaves.algafood.core.validation.TaxaFrete;
+import com.fredsonchaves.algafood.core.validation.Multiplo;
+import com.fredsonchaves.algafood.core.validation.ValorZeroIncluiDescricao;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
 public class Restaurante {
 
@@ -31,7 +36,8 @@ public class Restaurante {
 
     @Column(nullable = false)
     @DecimalMin(value = "1")
-    @TaxaFrete
+//    @TaxaFrete
+    @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
     @JsonIgnore
