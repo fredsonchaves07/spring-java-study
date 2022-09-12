@@ -122,27 +122,3 @@ public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 } 
 ```
-
-## Criando um banco de testes e usando `@TestPropertySource`
-
-- Com essa propriedade ao execurar os testes usamos a propriedade que está na pasta resources da aplicação
-- Uma alternativa de usar o mesmo tipo de banco de dados da aplicação ao invés de usar o h2
-- Criamos uma propriedade `application-test.properties`
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/algafood_test
-spring.datasource.username=postgres
-spring.datasource.password=1234
-spring.datasource.hikari.maximum-pool-size=1
-```
-
-- Anotamos a propriedade na classe de teste
-
-```java
-@TestPropertySource("application-test.properties")
-```
-
-## Limpando e populando banco de dados de teste
-
-- Criamos uma classe que possui a implementação da limpeza dos dados no banco de testes
-- A classe está no pacote util de teste `DatabaseCleaner`
