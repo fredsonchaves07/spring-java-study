@@ -1,6 +1,5 @@
 package com.fredsonchaves.algafood.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fredsonchaves.algafood.core.validation.Groups;
 import com.fredsonchaves.algafood.core.validation.Multiplo;
 import com.fredsonchaves.algafood.core.validation.ValorZeroIncluiDescricao;
@@ -40,7 +39,6 @@ public class Restaurante {
     @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     public List<Produto> produtos = new ArrayList<>();
 
@@ -51,7 +49,6 @@ public class Restaurante {
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "restaurante_forma_pagamento",
@@ -61,15 +58,12 @@ public class Restaurante {
     private List<FormaPagamento> formaPagamentos = new ArrayList<>();
 
     @Embedded
-    @JsonIgnore
     private Endereco endereco;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
