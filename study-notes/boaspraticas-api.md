@@ -39,3 +39,28 @@ public class JacksonMixinModule extends SimpleModule {
     }
 }
 ```
+
+## Trabalhando com datas e horas
+
+- Usar ISO-8601 para formatação de data/hora
+- É um padrão flexível que existe várias combinações possíveis
+- Exemplo de utilização, com representação do offset UTC (-03h de UTC -> Horário de Brasilia)
+
+```json
+{
+  "lastLoginDate": "2019-10-12T14:15:38-03:00"
+}
+```
+
+- Padrão com offset UTC global
+- Para encontrar o horário de brasilia basta diminuir -03h
+
+```json
+{
+  "lastLoginDate": "2019-10-12T14:15:38z"
+}
+```
+
+- Api deve aceitar qualquer fuso de horário e converter para um fuso horario que api esteja utilizando
+- Deve armazenar e retornar em UTC
+- Não inclua o horário, se não for necessário
