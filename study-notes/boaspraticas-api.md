@@ -64,3 +64,18 @@ public class JacksonMixinModule extends SimpleModule {
 - Api deve aceitar qualquer fuso de horário e converter para um fuso horario que api esteja utilizando
 - Deve armazenar e retornar em UTC
 - Não inclua o horário, se não for necessário
+- Para alterar no código a data hora em formato UTC no sistema
+
+```java
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private OffsetDateTime dataAtualizacao;
+```
+- Seta a hora de acordo com o timeZone que chama o backend
+
+```java
+    public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        SpringApplication.run(AlgafoodApplication.class, args);
+    }
+```
