@@ -16,9 +16,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
@@ -55,7 +53,7 @@ public class Restaurante {
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
-    private List<FormaPagamento> formaPagamentos = new ArrayList<>();
+    private Set<FormaPagamento> formaPagamentos = new HashSet<>();
 
     @Embedded
     private Endereco endereco;
@@ -92,6 +90,10 @@ public class Restaurante {
         return taxaFrete;
     }
 
+    public Set<FormaPagamento> getFormaPagamentos() {
+        return formaPagamentos;
+    }
+
     public void setTaxaFrete(BigDecimal taxaFrete) {
         this.taxaFrete = taxaFrete;
     }
@@ -111,5 +113,13 @@ public class Restaurante {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormaPagamentos().remove(formaPagamento);
+    }
+
+    public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormaPagamentos().add(formaPagamento);
     }
 }
