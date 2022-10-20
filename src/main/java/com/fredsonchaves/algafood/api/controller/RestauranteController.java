@@ -69,6 +69,11 @@ public class RestauranteController {
         }
     }
 
+    @PutMapping("/ativacoes")
+    public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+        cadastroRestauranteService.ativar(restauranteIds);
+    }
+
 //    @PatchMapping("/{id}")
 //    public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos) {
 //        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
