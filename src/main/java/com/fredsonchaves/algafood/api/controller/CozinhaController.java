@@ -5,10 +5,10 @@ import com.fredsonchaves.algafood.domain.repository.CozinhaRepository;
 import com.fredsonchaves.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -21,8 +21,9 @@ public class CozinhaController {
     private CadastroCozinhaService cadastroCozinhaService;
 
     @GetMapping()
-    public List<Cozinha> listas() {
-        return cozinhaRepository.findAll();
+    public Page<Cozinha> listas(Pageable pageable) {
+        Page<Cozinha> pageCozinha =  cozinhaRepository.findAll(pageable);
+        return pageCozinha;
     }
 
     @GetMapping("/{id}")

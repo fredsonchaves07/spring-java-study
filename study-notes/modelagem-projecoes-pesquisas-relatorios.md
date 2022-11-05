@@ -21,3 +21,31 @@ public class SquigglyConfig {
     }
 }
 ```
+
+## Tratando `BindException` ao enviar parâmetros de URL inválidos
+
+- Esse tipo de erro ocorre quando passamos um valor inválido de um parâmetro no recurso
+- Podemos criar um handler para tratar esse tipo de erro.
+- Informamos a exception `BindException`
+
+
+## Paginação e ordenação de recursos
+
+- A ideia da paginação e ordenação serve para otimizar o retorno das informações dos recursos
+- O retorno dos recursos é realizado de acordo com os parâmetros informados na URL, de qual página o usuário quer obter
+- Usamos os parâmetros `size`, `page` para filtrar os recursos
+- Exemplo de paginação de recurso
+
+```java
+    @GetMapping()
+    public List<Cozinha> listas(Pageable pageable) {
+        Page<Cozinha> pageCozinha =  cozinhaRepository.findAll(pageable);
+        return pageCozinha.getContent();
+    }
+```
+
+- A propriedade `sort` define qual valor o recurso deve ser ordenado. Se é por nome, data, valor. etc
+- Por padrão a ordenação é ascendente.
+- Caso, o usuario queira ordenar os recursos em ordem decrescente. Passamos o valor desc na propriedade
+- Podemos incluir as informações da paginação. Nesse caso, alteramos o retorno do controller para `Page<T>`
+- A implementação do page: `new PageImpl<>(listResource, pageable, page.getTotalElements()`
