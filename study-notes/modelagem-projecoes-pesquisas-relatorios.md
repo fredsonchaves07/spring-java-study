@@ -78,3 +78,24 @@ public class PageJsonSerializer extends JsonSerializer<Page<?>> {
 
 ## Implementando um conversor de propriedades de ordenação
 
+- Por padrão a ordenação das propriedades é realizada de acordo com a entidade
+- Gera o problema de expor a entidade
+- Uma das estratégia para evitar esse tipo de problema é realizar uma tradução de propriedades (usuário informa uma propriedade que é diferente da entidade)
+- Exemplo de tradução de um novo Pageable
+
+```java
+  private Pageable traduzirPageable(Pageable apiPageable) {
+        var mapeamento = ImmutableMap.of(
+                "nomeCliente", "cliente.nome",
+                "codigo", "codigo",
+                "restauranteNome", "restaurante.nome",
+                "valorToral", "valorTotal"
+        );
+        var orders =  apiPageable.getSort().stream()
+                .filter(order -> mapeamento.containsKey(order.getProperty()))
+                .map(order -> new Sort.Order(order.getDirection(),
+                        mapeamento.get(order.getProperty())))
+                .collect(Collectors.toList());
+        return PageRequest.of(apiPageable.getPageNumber(), apiPageable.getPageSize(), Sort.by(orders));
+    }
+```

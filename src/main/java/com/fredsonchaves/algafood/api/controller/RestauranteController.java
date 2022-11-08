@@ -7,8 +7,12 @@ import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaExceptio
 import com.fredsonchaves.algafood.domain.exception.NegocioException;
 import com.fredsonchaves.algafood.domain.repository.RestauranteRepository;
 import com.fredsonchaves.algafood.domain.service.CadastroRestauranteService;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -19,6 +23,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -95,5 +100,20 @@ public class RestauranteController {
             Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
             ReflectionUtils.setField(field, restauranteDestino, novoValor);
         });
+    }
+
+    private Pageable traduzirPageable(Pageable apiPageable) {
+        var mapeamento = ImmutableMap.of(
+                "nomeCliente", "cliente.nome",
+                "codigo", "codigo",
+                "restauranteNome", "restaurante.nome",
+                "valorToral", "valorTotal"
+        );
+        var orders =  apiPageable.getSort().stream()
+                .filter(order -> mapeamento.containsKey(order.getProperty()))
+                .map(order -> new Sort.Order(order.getDirection(),
+                        mapeamento.get(order.getProperty())))
+                .collect(Collectors.toList());
+        return PageRequest.of(apiPageable.getPageNumber(), apiPageable.getPageSize(), Sort.by(orders));
     }
 }
