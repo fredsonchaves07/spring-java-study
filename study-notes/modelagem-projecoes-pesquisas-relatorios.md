@@ -49,3 +49,32 @@ public class SquigglyConfig {
 - Caso, o usuario queira ordenar os recursos em ordem decrescente. Passamos o valor desc na propriedade
 - Podemos incluir as informações da paginação. Nesse caso, alteramos o retorno do controller para `Page<T>`
 - A implementação do page: `new PageImpl<>(listResource, pageable, page.getTotalElements()`
+
+## Implementando JsonSerializer para customizar representação de paginação
+
+- Usamos esse recurso para retirar algumas informações não necessárias da paginação do spring
+- Exemplo de serializador
+
+```java
+@JsonComponent
+public class PageJsonSerializer extends JsonSerializer<Page<?>> {
+
+
+    @Override
+    public void serialize(Page<?> page,
+                          JsonGenerator jsonGenerator,
+                          SerializerProvider serializerProvider
+    ) throws IOException {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeObjectField("content", page.getContent());
+        jsonGenerator.writeNumberField("size", page.getSize());
+        jsonGenerator.writeNumberField("totalElements", page.getTotalElements());
+        jsonGenerator.writeNumberField("totalPages", page.getTotalPages());
+        jsonGenerator.writeNumberField("number", page.getNumber());
+        jsonGenerator.writeEndObject();
+    }
+}
+```
+
+## Implementando um conversor de propriedades de ordenação
+
