@@ -100,3 +100,48 @@ public class PageJsonSerializer extends JsonSerializer<Page<?>> {
     }
 ```
 
+## Modelando endpoints de consultas com dados agregados (ideal para gráficos e dashboards)
+
+- Criamos um serviço agregado que retornara os dados com a consulta customizada
+- Usamos essa estratégia ao invés de incluir o método em um reposítório de `Pedidos` por exemplo
+
+```java
+Repository
+public class VendaQueryServiceImpl implements VendaQueryService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter) {
+        var builder = entityManager.getCriteriaBuilder();
+        var query = builder.createQuery(VendaDiaria.class);
+        var root = query.from(Restaurante.class);
+        var functionDateDataCriacao = builder.function("date", LocalDate.class, root.get("dataCriacao"));
+        var selection = builder.construct(VendaDiaria.class,
+                functionDateDataCriacao,
+                builder.count(root.get("id")),
+                builder.sum(root.get("valorTotal")));
+        query.select(selection);
+        query.groupBy(functionDateDataCriacao);
+        return entityManager.createQuery(query).getResultList();
+    }
+}
+```
+
+- No controller temos a implementação
+
+```java
+@RestController
+@RequestMapping(path = "/estatiticas")
+public class EstatiticasController {
+
+    @Autowired
+    private VendaQueryService vendaQueryService;
+
+    @GetMapping("/vendas-diarias")
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter) {
+        return vendaQueryService.consultarVendasDiarias(vendaDiariaFilter);
+    }
+}
+```
