@@ -117,7 +117,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         var builder = entityManager.getCriteriaBuilder();
         var query = builder.createQuery(VendaDiaria.class);
         var root = query.from(Restaurante.class);
-        var functionDateDataCriacao = builder.function("date", LocalDate.class, root.get("dataCriacao"));
+        var functionDateDataCriacao = builder.function("date", Date.class, root.get("dataCriacao"));
         var selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
                 builder.count(root.get("id")),
@@ -144,4 +144,30 @@ public class EstatiticasController {
         return vendaQueryService.consultarVendasDiarias(vendaDiariaFilter);
     }
 }
+```
+
+## Tratando time offset na agregação de vendas diárias por data
+
+- Podemos retornar os dados agrupados por data de acordo com o offset do usuário
+- Evita problemas de inconsistência de dados por data
+- Exemplo de consulta com função de conversão de data
+
+```java
+        var functionConvertTzDataCriacao = builder.function(
+                "convert_tz",
+                Date.class,
+                root.get("dataCriacao"),
+                builder.literal("+00:00"),
+                builder.literal(timeOffset)
+        );
+        var functionDateDataCriacao = builder.function("date", Date.class, functionConvertTzDataCriacao);
+```
+
+- O timeOffset é informado pelo controlador. Caso o usuário não informe, é assumido o valor padrão de "00:00"
+
+```java
+    @GetMapping("/vendas-diarias")
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter, @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
+        return vendaQueryService.consultarVendasDiarias(vendaDiariaFilter, timeOffset);
+    }
 ```

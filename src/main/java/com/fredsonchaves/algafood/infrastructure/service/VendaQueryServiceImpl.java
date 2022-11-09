@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,11 +18,18 @@ public class VendaQueryServiceImpl implements VendaQueryService {
     private EntityManager entityManager;
 
     @Override
-    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter) {
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter vendaDiariaFilter, String timeOffset) {
         var builder = entityManager.getCriteriaBuilder();
         var query = builder.createQuery(VendaDiaria.class);
         var root = query.from(Restaurante.class);
-        var functionDateDataCriacao = builder.function("date", LocalDate.class, root.get("dataCriacao"));
+        var functionConvertTzDataCriacao = builder.function(
+                "convert_tz",
+                Date.class,
+                root.get("dataCriacao"),
+                builder.literal("+00:00"),
+                builder.literal(timeOffset)
+        );
+        var functionDateDataCriacao = builder.function("date", Date.class, functionConvertTzDataCriacao);
         var selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
                 builder.count(root.get("id")),
