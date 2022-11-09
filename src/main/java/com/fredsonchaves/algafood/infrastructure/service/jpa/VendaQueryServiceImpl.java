@@ -1,4 +1,4 @@
-package com.fredsonchaves.algafood.infrastructure.service;
+package com.fredsonchaves.algafood.infrastructure.service.jpa;
 
 import com.fredsonchaves.algafood.domain.entity.Restaurante;
 import com.fredsonchaves.algafood.domain.entity.dto.VendaDiaria;

@@ -171,3 +171,62 @@ public class EstatiticasController {
         return vendaQueryService.consultarVendasDiarias(vendaDiariaFilter, timeOffset);
     }
 ```
+
+## Estruturando endpoint e serviço de emissao de relatórios em PDF
+
+- Podemos criar a estrutura do relatório através da ferramenta do JasperStudio
+- Após a criação do relatório, compilamos o arquivo e deixamos na pasta de relatórios em resources
+- Necessário adicionar a biblioteca do jasper reports
+
+```xml
+        <properties>
+            <java.version>17</java.version>
+            <jasperreports.version>6.20.0</jasperreports.version>
+        </properties>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-functions</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+```
+- Criamos um método que aceitara o conteudo em pdf
+
+```java
+    @GetMapping(value = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter vendaDiariaFilter, @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) throws JRException {
+        byte[] bytesPdf = vendaReportService.emitirVendasDiarias(vendaDiariaFilter, timeOffset);
+        var headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diaria.pdf");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .headers(headers)
+                .body(bytesPdf);
+    }
+```
+
+- A implementação da classe de serviço
+
+```java
+    @Autowired
+    private VendaQueryService vendaQueryService;
+
+    @Override
+    public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
+        try {
+            var inputStream = this.getClass().getResourceAsStream("/reports/vendas-diarias.jasper");
+            var parametros = new HashMap<String, Object>();
+            parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+            var vendasDiarias = vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
+            var datasource = new JRBeanCollectionDataSource(vendasDiarias);
+            var jasperPrint = JasperFillManager.fillReport(inputStream, parametros, datasource);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("Teste");
+        }
+    }
+```
