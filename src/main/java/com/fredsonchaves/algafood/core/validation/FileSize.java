@@ -12,13 +12,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {FileSizeValidator.class})
 @PositiveOrZero
-public @interface Multiplo {
+public @interface FileSize {
 
-    String message() default "{Multiplo valor inválida}";
+    String message() default "Tamanho de arquivo inválido";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    int numero();
+    String max();
 }

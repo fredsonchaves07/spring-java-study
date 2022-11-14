@@ -230,3 +230,61 @@ public class EstatiticasController {
         }
     }
 ```
+
+## Validando o tamanho máximo do arquivo
+
+- Incluimos as propriedades
+
+```properties
+spring.servlet.multipart.max-file-size=20KB
+spring.servlet.multipart.max-request-size=20MB
+```
+
+- Caso o arquivo exceda o tamanho permitido, é lançado a exceção `FileSizeLimitExceededException`
+- Também é possível definir limite para cada arquivo, caso temos uma aplicaçã que aceita mais de 1 arquivo
+- Criamos uma anotação para que seja feito a validação
+
+```java
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {FileSizeValidator.class})
+@PositiveOrZero
+public @interface FileSize {
+
+    String message() default "Tamanho de arquivo inválido";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    String max();
+}
+```
+
+- Implentação da anotação
+
+```java
+public class FileSizeValidator implements ConstraintValidator<FileSize, MultipartFile> {
+
+    private DataSize maxSize;
+
+    @Override
+    public void initialize(FileSize fileSize) {
+        this.maxSize = DataSize.parse(fileSize.max());
+    }
+
+    @Override
+    public boolean isValid(MultipartFile file, ConstraintValidatorContext constraintValidatorContext) {
+        return file == null || file.getSize() <= this.maxSize.toBytes();
+    }
+}
+```
+
+- Exemplo de utilização da validação
+
+```java
+import com.fredsonchaves.algafood.core.validation.FileSize;
+
+@FileSize(max = "500KB")
+private MultipartFile arquivo;
+```
