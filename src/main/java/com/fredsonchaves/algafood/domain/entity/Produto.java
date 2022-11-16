@@ -50,6 +50,10 @@ public class Produto {
         return ativo;
     }
 
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }

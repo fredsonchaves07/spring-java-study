@@ -24,4 +24,13 @@ public class FotoProduto {
     public FotoProduto() {
 
     }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public Long getRestauranteId() {
+        if (getProduto() != null) return getProduto().getRestaurante().getId();
+        return null;
+    }
 }

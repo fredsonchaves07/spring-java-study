@@ -288,3 +288,7 @@ import com.fredsonchaves.algafood.core.validation.FileSize;
 @FileSize(max = "500KB")
 private MultipartFile arquivo;
 ```
+
+## Excluindo e substituindo a foto do produto
+
+- 

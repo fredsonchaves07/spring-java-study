@@ -5,4 +5,6 @@ import com.fredsonchaves.algafood.domain.entity.FotoProduto;
 public interface ProdutoRepositoryQueries {
 
     FotoProduto save(FotoProduto fotoProduto);
+
+    void delete(FotoProduto fotoProduto);
 }
