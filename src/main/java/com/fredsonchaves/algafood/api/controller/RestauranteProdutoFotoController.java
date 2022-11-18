@@ -2,13 +2,17 @@ package com.fredsonchaves.algafood.api.controller;
 
 import com.fredsonchaves.algafood.domain.entity.FotoProduto;
 import com.fredsonchaves.algafood.domain.entity.Produto;
+import com.fredsonchaves.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.fredsonchaves.algafood.domain.service.CatalogoFotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -18,6 +22,9 @@ public class RestauranteProdutoFotoController {
 
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProdutoService;
+
+    @Autowired
+    private FotoStorageService fotoStorageService;
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void atualizarFoto(
@@ -42,5 +49,18 @@ public class RestauranteProdutoFotoController {
         fotoProduto.setTamanho(arquivoFile.getSize());
         fotoProduto.setNomeArquivo(arquivoFile.getOriginalFilename());
         catalogoFotoProdutoService.salvar(fotoProduto);
+    }
+
+    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        try {
+            FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
+            InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new InputStreamResource(inputStream));
+        } catch (EntidadeNaoEncontradaException exception) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

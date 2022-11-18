@@ -21,3 +21,33 @@
         }
     }
 ```
+
+## Servindo arquivos de fotos pela API
+
+- Devemos implementar um método para servir para o consumidor. Buscar do armazenamento e enviar pra API
+
+```java
+@RestController
+@RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
+public class RestauranteProdutoFotoController {
+    @Autowired
+    private FotoStorageService fotoStorageService;
+
+    @GetMapping(produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        try {
+            FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
+            InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new InputStreamResource(inputStream));
+        } catch (EntidadeNaoEncontradaException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
+```
+
+## Checando media type ao servir arquivos de fotos
+
+- Exemplo de implementação para verificar
