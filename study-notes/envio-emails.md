@@ -126,3 +126,29 @@ public class SMTPEnvioEmailService implements EnvioEmailService {
     }
 }
 ```
+
+## Criando templates de email
+
+- Adicionamos o freemarker que facilita a construção de templates de email
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+```
+
+- Criamos um método que processa o template
+- Recebe o html e processa para string
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Autowired
+private Configuration freemarkerConfig;
+
+private String processarTemplate(Mensagem mensagem){
+        freemarkerConfig.getTemplate(mensagem.getCorpo());
+        return FreemarkerTemplateUtils.processTemplateIntoString(template, mensagem.getVariaveis())
+}
+```
