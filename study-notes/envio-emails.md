@@ -152,3 +152,9 @@ private String processarTemplate(Mensagem mensagem){
         return FreemarkerTemplateUtils.processTemplateIntoString(template, mensagem.getVariaveis())
 }
 ```
+
+## Domain Events
+
+- É um padrão do DDD
+- Facilita modificações no ambiente de negócio
+- Trabalha com os principios da responsabilidade única e aberto fechado
