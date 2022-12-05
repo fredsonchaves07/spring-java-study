@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "www.algafood.com.br")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
