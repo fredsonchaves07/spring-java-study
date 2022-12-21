@@ -35,3 +35,10 @@
 
 ![Captura de tela de 2022-12-16 11-10-16](https://user-images.githubusercontent.com/43495376/208116581-a817bfa0-77c7-4bc5-8050-fcb38d4ce020.png)
 
+### Fluxo para emitir e usar Refresh Tokens
+
+- Uma alternativa para regerar tokens inválidos (troca um access token que foi expirado)
+- Resolve o problema de ter que ficar interagindo com usuário para solicitar usuario e senha
+
+![Captura de tela de 2022-12-21 11-33-58](https://user-images.githubusercontent.com/43495376/208929772-01dce512-e0de-4575-95a6-6117fdacccdb.png)
+
