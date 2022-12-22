@@ -42,3 +42,9 @@
 
 ![Captura de tela de 2022-12-21 11-33-58](https://user-images.githubusercontent.com/43495376/208929772-01dce512-e0de-4575-95a6-6117fdacccdb.png)
 
+### Fluxo Client Credentials
+
+- Permite obter um access token usando apenas as credenciais do client
+- Fluxo que não tem interação com usuário final
+
+![Captura de tela de 2022-12-22 11-11-32](https://user-images.githubusercontent.com/43495376/209152607-e323665b-3192-427e-9c4f-3b04576e1fb5.png)
