@@ -48,3 +48,7 @@
 - Fluxo que não tem interação com usuário final
 
 ![Captura de tela de 2022-12-22 11-11-32](https://user-images.githubusercontent.com/43495376/209152607-e323665b-3192-427e-9c4f-3b04576e1fb5.png)
+
+## Qual fluxo do OAuth2 usar?
+
+![Captura de tela de 2023-01-10 15-07-48](https://user-images.githubusercontent.com/43495376/211628862-c58db530-fad2-472f-b70f-afaffdc425c4.png)
