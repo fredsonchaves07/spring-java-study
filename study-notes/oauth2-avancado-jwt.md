@@ -26,3 +26,35 @@
 ## Json Web Token (JWT)
 
 - Uma string que contém informações de acesso e autorização
+
+## Assinatura com chave simétrica
+
+- Compartilham a mesma chave. O emissor deve ser confiável
+
+![Captura de tela de 2023-01-12 11-48-39](https://user-images.githubusercontent.com/43495376/212097954-3fbad675-0b1a-4ee2-9f50-d6a43ed02499.png)
+
+## Assinatura com chave assimétrica
+
+- Utiliza um conjunto de chave pública e privada
+- A chave privada é usada para assinar o jwt
+- A chave publica é utilizada pelo receptor para validação da assinatura do token
+
+![Captura de tela de 2023-01-12 11-50-02](https://user-images.githubusercontent.com/43495376/212098255-e0f1fa04-1db3-4059-9ba4-f5f2ef6fd705.png)
+
+- Para gerar a chave podemos executar o comando como abaixo
+
+```shell
+keytool -genkeypair -alias moviecatchapi -keyalg RSA -keypass 85de3caf-afe6-41d5-8144-573f916ffe42 -keystore moviecatch.jks -storepass movie@123 
+```
+
+- Para listar as chaves usamos o comando abaixo informando o storepass
+
+```shell
+keytool -list -keystore moviecatch.jks
+```
+
+- Exportamos um arquivo que conterá a chave pública
+
+```shell
+keytool -export -rfc -alias moviecatchapi -keystore moviecatch.jks -file moviecatch-cert.pem
+```
