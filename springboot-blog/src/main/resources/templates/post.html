@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Spring Blog</title>
+<body>
+</head>
+<h1>Welcome to Spring Blog</h1>
+<div th:each="post : ${posts}">
+    <h3 th:text="${post.title}"></h3>
+    <h6 th:text="${post.description}"></h6>
+    <div th:text="${post.body}"></div>
+</div>
+<div>
+    <a href="/posts/add">Write new Blog Post</a>
+</div>
+</body>
+</html>
