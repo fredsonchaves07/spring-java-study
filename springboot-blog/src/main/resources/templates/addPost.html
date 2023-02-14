@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-           lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
   <title>Spring Blog</title>
 </head>
@@ -10,14 +9,17 @@
   <div>
   <label for="title">Title:</label>
   <input id="title" th:field="${post.title}" type="text"/>
+      <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Invalid Title</div>
   </div>
  <div>
  <label for="description">Description:</label>
   <input id="description" th:field="${post.description}" type="text"/>
+     <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Invalid Description </div>
  </div>
   <div>
  <label for="body">Body:</label>
   <textarea id="body" th:field="${post.body}"></textarea>
+      <div style="color:red" th:if="${#fields.hasErrors('body')}" th:errors="*{body}">Invalid Body</div>
   </div>
   <div>
   <input type="submit">
