@@ -46,3 +46,43 @@
   </div>
 </form>
 ```
+
+### Implementando validação de formulário
+
+- Spring possui um starter pra validações iniciais. Adicionamos a dependencia no projeto
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+```
+
+- Exemplo de validação
+
+```java
+public class Post {
+
+    private Integer id;
+
+    @NotNull
+    @Size(min = 3, max = 50, message = "Title must be minimum 3 characters, and maximum, 50 characters")
+    private String title;
+
+    @NotNull
+    @Size(min = 3, max = 500, message = "Description must be minimum 3 characters, and maximum 500 characters")
+    private String description;
+
+    @NotNull
+    @Size(min = 3, max = 5000, message = "Body must be minimum 3 characters, and maximum 5000 characters")
+    private String body;
+
+    private String slug;
+
+    private PostStatus postStatus;
+
+    private LocalDateTime createdOn;
+
+    private List<Comment> comments;
+}
+```
