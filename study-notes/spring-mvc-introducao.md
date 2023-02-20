@@ -86,3 +86,49 @@ public class Post {
     private List<Comment> comments;
 }
 ```
+
+## Usando o Tomcat, Jetty e Undertow servelets containers
+
+- Por padrão, o spring boot incluir Tomcat como servlet container
+- Mas é possível alterar para outras soluções como jetty ou undertow
+- Para usar o jetty por exemplo, excluimos o `spring-boot-starter-tomcat` e adicionamos o `spring-boot-starter-jetty`
+- Undertow é um web server baseado em Java e provê recurso bloqueante e não bloqueante baseado em NIO
+- Para adicionar este servidor adicionamos a dependência `spring-boot-starter-undertow`
+- Também é possível configurar diversas propriedades dos servlet containers usando `server.tomcat.*`, `server.jetty.*`, e `server.undertow.*` ou `server.*` no arquivo de propriedades
+
+## Customizando configurações do Spring MVC
+
+- É possível criar classe de configuração do Spring provendo mais controle da aplicação
+- Exemplo de configuração 
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry){
+        registry.addRedirectViewController("/", "/posts");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //Add additional interceptors here
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/assets/").addResourceLocations
+                ("/resources/assets/");
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfig urer configurer) {
+        // Do Nothing
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        //Add additional formatters here
+    }
+}
+```
