@@ -132,3 +132,60 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
+
+## Deploy da aplicação Spring Boot com WAR
+
+- A aplicação web Spring Boot pode ser realizado o deploy usando o tipo de empacotamento WAR
+- Este tipo é informado no arquivo `pom.xml`
+
+```xml
+<packaging>war</packaging>
+```
+
+## Envio de arquivo
+
+- A classe `MultipartAutoConfiguration` habilita o multi-part upload como default. Podemos criar um formulário do tipo `enctype="multipart/form-data"`para envio de arquivos
+- Exemplo de formulário
+
+```html
+<form action="uploadMyFile" th:action="@{/uploadMyFile}"
+        method="post" enctype="multipart/form-data">
+  <input type="file" name="myFile" />
+  <input type="submit" />
+</form>
+```
+
+- Exemplo de formulário de controle 
+
+```java
+@PostMapping("/uploadMyFile")
+public String handleFileUpload(@RequestParam("myFile") MultipartFile file) {
+    if (!file.isEmpty())
+    {
+        String name = file.getOriginalFilename();
+        try
+        {
+            byte[] bytes = file.getBytes();
+            Files.write(new File(name).toPath(), bytes);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    return "redirect:/fileUpload";
+}
+```
+- É possíve customizar configurações do multipart
+
+```properties
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=1MB
+spring.servlet.multipart.max-request-size=10MB
+spring.servlet.multipart.file-size-threshold=0B
+```
+
+## Utilizando recursos de internacionalização
+
+- Com SpringBoot é possível provê recursos de multipla linguagem cohecido como internacionalização ou il8n
+- Criamos um arquivo `messages_<language>.properties`
