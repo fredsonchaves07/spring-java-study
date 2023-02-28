@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:8.0
+    command: --innodb-use-native-aio=0
+    container_name: db
+    ports:
+      - "3306:3306"
+    tty: true
+    environment:
+      - MYSQL_DATABASE=springblog
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - spring-blog
+
+networks:
+  spring-blog:
+    driver: bridge

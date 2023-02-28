@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,9 @@ public class Post {
 
     private PostStatus postStatus;
 
-    private LocalDateTime createdOn;
+    private LocalDate createdOn;
+
+    private LocalDate updatedOn;
 
     private List<Comment> comments;
 }

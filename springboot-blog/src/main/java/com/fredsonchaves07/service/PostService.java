@@ -1,11 +1,13 @@
 package com.fredsonchaves07.service;
 
 import com.fredsonchaves07.domain.Post;
+import com.fredsonchaves07.repository.JdbcPostRepository;
 import com.fredsonchaves07.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -13,9 +15,11 @@ import java.util.Set;
 public class PostService {
 
     @Autowired
-    private final PostRepository postRepository;
+    private final JdbcPostRepository postRepository;
 
     public void addPost(Post post) {
+        post.setCreatedOn(LocalDate.now());
+        post.setUpdatedOn(LocalDate.now());
         postRepository.addPost(post);
     }
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -28,7 +29,7 @@ public class Comment {
     @Size(min = 3, max = 100, message = "Description must be minimum 3 characters, and maximum 100 characters")
     private String body;
 
-    private LocalDateTime createdOn;
+    private LocalDate createdOn;
 
-    private LocalDateTime updatedOn;
+    private LocalDate updatedOn;
 }
