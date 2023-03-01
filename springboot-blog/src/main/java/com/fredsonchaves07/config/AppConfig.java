@@ -61,7 +61,7 @@ public class AppConfig {
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource);
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.addScript(new ClassPathResource("data.sql"));
+        databasePopulator.addScript(new ClassPathResource("db/migration/V1.0__Init.sql"));
         dataSourceInitializer.setDatabasePopulator(databasePopulator);
         dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
         return dataSourceInitializer;
