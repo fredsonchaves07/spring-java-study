@@ -1,4 +1,4 @@
-package com.fredsonchaves07.repository.mapper;
+package com.fredsonchaves07.mappers;
 
 import com.fredsonchaves07.domain.Post;
 import com.fredsonchaves07.domain.PostStatus;

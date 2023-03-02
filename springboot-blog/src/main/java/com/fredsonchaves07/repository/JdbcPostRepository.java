@@ -1,7 +1,7 @@
 package com.fredsonchaves07.repository;
 
 import com.fredsonchaves07.domain.Post;
-import com.fredsonchaves07.repository.mapper.PostMapper;
+import com.fredsonchaves07.mappers.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
