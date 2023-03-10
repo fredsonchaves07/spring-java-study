@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.fredsonchaves07.grpcproductexample";
+option java_multiple_files = true;
+
+package com.fredsonchaves07.grpcproductexample;
+
+service ProductInfo {
+  rpc addProduct(Product) returns (ProductId);
+  rpc getProduct(ProductId) returns (Product);
+}
+
+message ProductId {
+  string value = 1;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+}
