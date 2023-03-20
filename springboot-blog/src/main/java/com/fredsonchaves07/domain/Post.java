@@ -1,6 +1,7 @@
 package com.fredsonchaves07.domain;
 
 import com.fredsonchaves07.validation.BlogPostTitleAlreadyExists;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -9,6 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,6 +20,8 @@ import java.util.List;
 @BlogPostTitleAlreadyExists
 public class Post {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotNull
@@ -39,5 +44,10 @@ public class Post {
 
     private LocalDate updatedOn;
 
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Comment> comments;
 }
