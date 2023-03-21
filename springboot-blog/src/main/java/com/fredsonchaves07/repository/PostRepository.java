@@ -1,23 +1,14 @@
 package com.fredsonchaves07.repository;
 
 import com.fredsonchaves07.domain.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Repository
-public class PostRepository {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    private final Set<Post> posts = new CopyOnWriteArraySet<>();
-
-
-    public void addPost(Post post) {
-        posts.add(post);
-    }
-
-
-    public Set<Post> findAllPosts() {
-        return posts;
-    }
+    boolean existsByTitle(String title);
 }

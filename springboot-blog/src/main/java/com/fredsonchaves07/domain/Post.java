@@ -22,7 +22,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotNull
     @Size(min = 3, max = 50, message = "Title must be minimum 3 characters, and maximum, 50 characters")
