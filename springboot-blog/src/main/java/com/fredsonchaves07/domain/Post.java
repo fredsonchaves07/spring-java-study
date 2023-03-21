@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table
+@Document
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,16 +38,12 @@ public class Post {
 
     private String slug;
 
+    @Field(name = "post_status")
     private PostStatus postStatus;
 
     private LocalDate createdOn;
 
     private LocalDate updatedOn;
 
-    @OneToMany(
-            mappedBy = "post",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
     private List<Comment> comments;
 }
